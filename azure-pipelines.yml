@@ -2,7 +2,7 @@ trigger:
   - main
 
 variables:
-  azureSubscription: "93186e3f-da01-4cd3-8110-b71d24f4696c"
+  azureSubscription: "ff29e49f-d6f5-4071-bbdd-467139caa4df"
 
   webAppName: "nodejs-azure-app-service"
 
@@ -22,12 +22,13 @@ stages:
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: "18.x"
+              versionSpec: "10.x"
             displayName: "Install Node.js"
 
           - script: |
               npm install
-              npm run build
+              npm run build --if-present
+              npm run test --if-present
             displayName: "npm install, build and test"
 
           - task: ArchiveFiles@2
@@ -57,9 +58,11 @@ stages:
             deploy:
               steps:
                 - task: AzureWebApp@1
-                  displayName: "Azure Web App Deploy: {{ webAppName }}"
+                  displayName: "Azure Web App Deploy: nodejs-azure-app-service"
                   inputs:
                     azureSubscription: $(azureSubscription)
                     appType: webAppLinux
                     appName: $(webAppName)
+                    runtimeStack: "NODE|10.10"
                     package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+                    startUpCommand: "pm2 start dist/index.js --no-daemon"
