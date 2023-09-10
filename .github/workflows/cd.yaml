@@ -3,9 +3,9 @@ name: Continuous Delivery
 on:
   workflow_dispatch:
   pull_request:
-      branches:
-        - main
-      types: [closed]
+    branches:
+      - main
+    types: [closed]
 
 jobs:
   build:
@@ -48,6 +48,6 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }} 
           package: .
 
-      - name: REMOVE ARTIFACT
-        run: |
-          rm node-app.zip
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: react-app

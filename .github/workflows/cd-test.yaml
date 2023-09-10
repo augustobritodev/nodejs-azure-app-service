@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   pull_request:
     branches:
-      - develop
+      - main
     types: [closed]
 
 jobs:
@@ -60,6 +60,6 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }} 
           package: .
 
-      - name: REMOVE ARTIFACT
-        run: |
-          rm node-app.zip
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: react-app
