@@ -5,7 +5,7 @@ const app = express();
 app.get('/', (req: any, res: any) => {
   res.json(
     {
-      message: 'Hello World from Typescript v3',
+      message: 'Hello World from Typescript v33',
       date: new Date().toISOString()
     }
   );
